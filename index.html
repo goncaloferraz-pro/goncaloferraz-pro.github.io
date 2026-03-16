@@ -10,19 +10,30 @@
   <link rel="alternate" type="text/markdown" href="/profile.md">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=JetBrains+Mono:wght@300;400&family=Source+Sans+3:ital,wght@0,300;0,400;0,600;1,300&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
   <style>
+    /* ─── Tokens ──────────────────────────────────────────── */
     :root {
-      --bg:            #0B0B0B;
-      --bg-2:          #131313;
-      --bg-3:          #1C1C1C;
-      --border:        #222222;
-      --text:          #DEDAD3;
-      --text-muted:    #7A7670;
-      --text-dim:      #444240;
-      --accent:        #C8952A;
-      --accent-dim:    rgba(200, 149, 42, 0.10);
-      --accent-border: rgba(200, 149, 42, 0.28);
+      --bg:            #F7F4EF;
+      --bg-2:          #EFECE5;
+      --bg-3:          #E8E4DC;
+      --border:        #DDD8D0;
+      --text:          #1A1714;
+      --text-muted:    #5C5650;
+      --text-dim:      #B0A89E;
+      --accent:        #C4541A;
+      --accent-dim:    rgba(196, 84, 26, 0.07);
+      --accent-border: rgba(196, 84, 26, 0.28);
+
+      /* Spacing scale — base 8 */
+      --sp-1: 0.5rem;   /*  8px */
+      --sp-2: 1rem;     /* 16px */
+      --sp-3: 1.5rem;   /* 24px */
+      --sp-4: 2rem;     /* 32px */
+      --sp-5: 2.5rem;   /* 40px */
+      --sp-6: 3rem;     /* 48px */
+      --sp-8: 4rem;     /* 64px */
+      --sp-11: 5.5rem;  /* 88px */
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -32,75 +43,44 @@
       scroll-behavior: smooth;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
+      text-rendering: optimizeLegibility;
     }
 
     body {
       background: var(--bg);
       color: var(--text);
-      font-family: 'Source Sans 3', sans-serif;
-      font-weight: 300;
-      line-height: 1.7;
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 400;
+      line-height: 1.75;
       overflow-x: hidden;
+      font-feature-settings: 'liga' 1, 'kern' 1;
     }
 
-    /* Amber left rail */
-    body::before {
-      content: '';
-      position: fixed;
-      top: 0; left: 0;
-      width: 2px;
-      height: 100vh;
-      background: linear-gradient(
-        to bottom,
-        transparent 0%,
-        var(--accent) 20%,
-        var(--accent) 80%,
-        transparent 100%
-      );
-      z-index: 100;
-      pointer-events: none;
-    }
-
-    /* Subtle noise grain */
-    body::after {
-      content: '';
-      position: fixed;
-      inset: 0;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-      opacity: 0.022;
-      pointer-events: none;
-      z-index: 0;
-    }
-
-    /* ─── Animations ─────────────────────────────── */
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(18px); }
-      to   { opacity: 1; transform: translateY(0);    }
-    }
+    /* ─── Fade-in — opacity only, no movement ────────────── */
     @keyframes fadeIn {
       from { opacity: 0; }
       to   { opacity: 1; }
     }
 
-    /* ─── Layout ─────────────────────────────────── */
+    /* ─── Layout ──────────────────────────────────────────── */
     .container {
       max-width: 740px;
       margin: 0 auto;
-      padding: 0 52px;
+      padding: 0 var(--sp-6);
     }
     @media (max-width: 640px) {
-      .container { padding: 0 28px; }
+      .container { padding: 0 var(--sp-4); }
     }
 
-    /* ─── Section label ──────────────────────────── */
+    /* ─── Section label ───────────────────────────────────── */
     .section-label {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 0.62rem;
+      font-size: 0.75rem;
       font-weight: 400;
       letter-spacing: 0.22em;
       text-transform: uppercase;
       color: var(--accent);
-      margin-bottom: 2.25rem;
+      margin-bottom: var(--sp-5);
       display: flex;
       align-items: center;
       gap: 0.8rem;
@@ -113,52 +93,46 @@
       background: var(--border);
     }
 
-    /* ─── HERO ───────────────────────────────────── */
+    /* ─── HERO ────────────────────────────────────────────── */
     #hero {
       min-height: 100vh;
       display: flex;
       flex-direction: column;
       justify-content: center;
-      padding: 100px 0 80px;
-      position: relative;
+      padding: var(--sp-11) 0 var(--sp-8);
     }
 
-    .hero-badge {
+    /* Availability status — static dot, no pulse */
+    .hero-availability {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 0.58rem;
-      letter-spacing: 0.22em;
+      font-size: 0.78rem;
+      letter-spacing: 0.18em;
       text-transform: uppercase;
       color: var(--accent);
-      border: 1px solid var(--accent-border);
-      background: var(--accent-dim);
-      padding: 0.38em 0.85em;
       display: inline-flex;
       align-items: center;
-      gap: 0.5em;
-      margin-bottom: 2.75rem;
-      animation: fadeIn 0.9s ease both;
+      gap: 0.6em;
+      margin-bottom: var(--sp-6);
+      animation: fadeIn 0.8s ease both;
     }
-    .hero-badge::before {
+    .hero-availability::before {
       content: '';
       display: inline-block;
-      width: 5px; height: 5px;
+      width: 5px;
+      height: 5px;
       border-radius: 50%;
       background: var(--accent);
-      animation: pulse 2.4s ease infinite;
-    }
-    @keyframes pulse {
-      0%, 100% { opacity: 1; }
-      50%       { opacity: 0.3; }
+      flex-shrink: 0;
     }
 
     .hero-name {
       font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(3rem, 9vw, 6.8rem);
+      font-size: clamp(3.2rem, 9vw, 7rem);
       font-weight: 300;
       line-height: 1.0;
       letter-spacing: -0.02em;
       color: var(--text);
-      animation: fadeUp 0.9s 0.08s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+      animation: fadeIn 0.8s 0.1s ease both;
     }
     .hero-name-alt {
       font-style: italic;
@@ -171,104 +145,92 @@
 
     .hero-rule {
       width: 48px;
-      height: 2px;
-      background: var(--accent);
-      margin: 1.6rem 0;
-      animation: fadeIn 0.9s 0.28s ease both;
+      height: 1px;
+      background: var(--border);
+      margin: var(--sp-4) 0;
+      animation: fadeIn 0.8s 0.2s ease both;
     }
 
     .hero-title {
-      font-family: 'Source Sans 3', sans-serif;
-      font-size: clamp(0.85rem, 2vw, 1rem);
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.2rem, 2.2vw, 1.45rem);
       font-weight: 400;
       color: var(--text-muted);
-      letter-spacing: 0.04em;
-      margin-bottom: 0.4rem;
-      animation: fadeUp 0.9s 0.32s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+      letter-spacing: 0.02em;
+      margin-bottom: var(--sp-1);
+      animation: fadeIn 0.8s 0.25s ease both;
     }
 
     .hero-location {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 0.65rem;
+      font-size: 0.82rem;
       color: var(--text-dim);
       letter-spacing: 0.1em;
-      margin-bottom: 2.75rem;
-      animation: fadeUp 0.9s 0.38s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+      margin-bottom: var(--sp-6);
+      animation: fadeIn 0.8s 0.3s ease both;
     }
 
     .hero-tagline {
       font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(1.05rem, 2.6vw, 1.38rem);
+      font-size: clamp(1.45rem, 3vw, 1.9rem);
       font-weight: 300;
       font-style: italic;
       line-height: 1.55;
       color: var(--text);
-      max-width: 520px;
-      margin-bottom: 3.25rem;
-      animation: fadeUp 0.9s 0.46s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+      max-width: 540px;
+      margin-bottom: var(--sp-6);
+      animation: fadeIn 0.8s 0.38s ease both;
     }
 
     .hero-nav {
       display: flex;
-      gap: 2.25rem;
+      gap: var(--sp-5);
       flex-wrap: wrap;
-      animation: fadeUp 0.9s 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+      animation: fadeIn 0.8s 0.48s ease both;
     }
     .hero-nav a {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 0.62rem;
+      font-size: 0.78rem;
       letter-spacing: 0.16em;
       text-transform: uppercase;
       color: var(--text-muted);
       text-decoration: none;
       transition: color 0.2s;
-      position: relative;
-    }
-    .hero-nav a::after {
-      content: '';
-      position: absolute;
-      bottom: -3px; left: 0;
-      width: 0; height: 1px;
-      background: var(--accent);
-      transition: width 0.3s ease;
     }
     .hero-nav a:hover { color: var(--accent); }
-    .hero-nav a:hover::after { width: 100%; }
 
-    /* ─── Sections ───────────────────────────────── */
+    /* ─── Sections ────────────────────────────────────────── */
     section {
-      padding: 88px 0;
+      padding: var(--sp-11) 0;
       border-top: 1px solid var(--border);
-      position: relative;
-      z-index: 1;
     }
 
-    /* ─── ABOUT ──────────────────────────────────── */
+    /* ─── ABOUT ───────────────────────────────────────────── */
     .about-text {
-      font-size: 1rem;
+      font-size: 1.4rem;
       line-height: 1.82;
       color: var(--text);
-      margin-bottom: 1.15rem;
+      margin-bottom: var(--sp-3);
+      hyphens: auto;
     }
     .about-text:last-child { margin-bottom: 0; }
     .about-text strong {
-      color: var(--text);
       font-weight: 600;
     }
 
-    /* ─── EXPERIENCE ─────────────────────────────── */
+    /* ─── EXPERIENCE ──────────────────────────────────────── */
     .timeline-item {
       display: grid;
       grid-template-columns: 90px 1fr;
-      gap: 0 2.25rem;
-      padding: 1.6rem 0;
+      gap: 0 var(--sp-5);
+      padding: var(--sp-4) 0;
       border-bottom: 1px solid var(--border);
     }
     .timeline-item:last-child { border-bottom: none; }
 
     .timeline-dates {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 0.58rem;
+      font-size: 0.75rem;
       color: var(--text-dim);
       letter-spacing: 0.05em;
       line-height: 1.65;
@@ -277,47 +239,52 @@
     }
 
     .timeline-role {
-      font-family: 'Source Sans 3', sans-serif;
-      font-size: 0.925rem;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.3rem;
       font-weight: 600;
       color: var(--text);
       margin-bottom: 0.12rem;
     }
     .timeline-company {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 0.62rem;
+      font-size: 0.78rem;
       color: var(--accent);
       letter-spacing: 0.1em;
       text-transform: uppercase;
-      margin-bottom: 0.5rem;
+      margin-bottom: var(--sp-1);
     }
     .timeline-desc {
-      font-size: 0.86rem;
+      font-size: 1.25rem;
       color: var(--text-muted);
-      line-height: 1.65;
+      line-height: 1.72;
+      hyphens: auto;
     }
     .timeline-highlight {
+      display: inline-flex;
+      align-items: center;
+      margin-top: var(--sp-1);
       font-family: 'JetBrains Mono', monospace;
-      font-size: 0.58rem;
+      font-size: 0.72rem;
       color: var(--accent);
-      letter-spacing: 0.04em;
-      margin-top: 0.4rem;
-      opacity: 0.85;
+      letter-spacing: 0.06em;
+      border: 1px solid var(--accent-border);
+      background: var(--accent-dim);
+      padding: 0.25em 0.65em;
     }
 
     @media (max-width: 520px) {
       .timeline-item {
         grid-template-columns: 1fr;
-        gap: 0.3rem 0;
+        gap: var(--sp-1) 0;
       }
       .timeline-dates { text-align: left; }
     }
 
-    /* ─── SKILLS ─────────────────────────────────── */
+    /* ─── SKILLS ──────────────────────────────────────────── */
     .skills-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: 2.5rem 3rem;
+      gap: var(--sp-5) var(--sp-6);
     }
     @media (max-width: 520px) {
       .skills-grid { grid-template-columns: 1fr; }
@@ -325,11 +292,11 @@
 
     .skill-group-title {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 0.6rem;
+      font-size: 0.78rem;
       letter-spacing: 0.2em;
       text-transform: uppercase;
       color: var(--accent);
-      margin-bottom: 0.8rem;
+      margin-bottom: var(--sp-2);
     }
     .skill-list {
       list-style: none;
@@ -338,7 +305,7 @@
       gap: 0.38rem;
     }
     .skill-list li {
-      font-size: 0.86rem;
+      font-size: 1.25rem;
       color: var(--text-muted);
       padding-left: 1.1em;
       position: relative;
@@ -350,63 +317,53 @@
       color: var(--text-dim);
     }
 
-    /* ─── PORTFOLIO CTA ──────────────────────────── */
+    /* ─── PORTFOLIO CTA ───────────────────────────────────── */
     .portfolio-cta {
       display: block;
       border: 1px solid var(--border);
       background: var(--bg-2);
-      padding: 3rem 3rem 2.75rem;
+      padding: var(--sp-6) var(--sp-6) var(--sp-5);
       text-decoration: none;
-      position: relative;
-      overflow: hidden;
-      transition: border-color 0.35s, background 0.35s;
-    }
-    .portfolio-cta::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0;
-      width: 2px; height: 100%;
-      background: var(--accent);
-      transition: width 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      transition: border-color 0.3s, background 0.3s;
     }
     .portfolio-cta:hover {
       border-color: var(--accent-border);
       background: var(--bg-3);
     }
-    .portfolio-cta:hover::before { width: 5px; }
 
     .cta-label {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 0.6rem;
+      font-size: 0.78rem;
       letter-spacing: 0.2em;
       text-transform: uppercase;
       color: var(--accent);
-      margin-bottom: 1.1rem;
+      margin-bottom: var(--sp-3);
     }
     .cta-title {
       font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(1.6rem, 4vw, 2.3rem);
+      font-size: clamp(1.7rem, 4vw, 2.4rem);
       font-weight: 300;
       color: var(--text);
       line-height: 1.2;
-      margin-bottom: 0.85rem;
+      margin-bottom: var(--sp-2);
     }
     .cta-desc {
-      font-size: 0.875rem;
+      font-size: 1.3rem;
       color: var(--text-muted);
-      line-height: 1.72;
+      line-height: 1.75;
       max-width: 480px;
-      margin-bottom: 1.6rem;
+      margin-bottom: var(--sp-4);
+      hyphens: auto;
     }
     .cta-domains {
       display: flex;
       flex-wrap: wrap;
       gap: 0.45rem;
-      margin-bottom: 1.75rem;
+      margin-bottom: var(--sp-4);
     }
     .cta-tag {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 0.54rem;
+      font-size: 0.72rem;
       letter-spacing: 0.1em;
       text-transform: uppercase;
       color: var(--text-dim);
@@ -415,122 +372,139 @@
     }
     .cta-arrow {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 0.68rem;
+      font-size: 0.85rem;
       color: var(--accent);
       letter-spacing: 0.1em;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      transition: gap 0.3s ease;
     }
-    .portfolio-cta:hover .cta-arrow { gap: 1rem; }
 
-    /* ─── CREDENTIALS ────────────────────────────── */
+    /* ─── CREDENTIALS ─────────────────────────────────────── */
     .credentials-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 3rem;
+      gap: var(--sp-6);
     }
     @media (max-width: 600px) {
-      .credentials-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+      .credentials-grid { grid-template-columns: 1fr; gap: var(--sp-5); }
     }
 
     .cred-group-title {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 0.6rem;
+      font-size: 0.78rem;
       letter-spacing: 0.2em;
       text-transform: uppercase;
       color: var(--accent);
-      margin-bottom: 1.3rem;
+      margin-bottom: var(--sp-3);
     }
     .cred-list {
       list-style: none;
       display: flex;
       flex-direction: column;
-      gap: 1.1rem;
+      gap: var(--sp-3);
     }
     .cred-degree {
-      font-size: 0.875rem;
+      font-size: 1.25rem;
       color: var(--text);
       font-weight: 400;
       line-height: 1.4;
-      margin-bottom: 0.18rem;
+      margin-bottom: 0.22rem;
     }
     .cred-institution {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 0.58rem;
+      font-size: 0.75rem;
       color: var(--text-dim);
       letter-spacing: 0.05em;
     }
 
-    /* ─── CONTACT ────────────────────────────────── */
-    #contact { padding-bottom: 120px; }
+    /* ─── CONTACT ─────────────────────────────────────────── */
+    #contact { padding-bottom: 7.5rem; }
 
     .contact-headline {
       font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(1.75rem, 4vw, 2.5rem);
+      font-size: clamp(1.9rem, 4vw, 2.7rem);
       font-weight: 300;
       font-style: italic;
       color: var(--text);
       line-height: 1.35;
-      margin-bottom: 2.5rem;
+      margin-bottom: var(--sp-5);
     }
     .contact-links {
       display: flex;
       flex-direction: column;
-      gap: 1.05rem;
+      gap: var(--sp-2);
     }
     .contact-row {
       display: flex;
       align-items: baseline;
-      gap: 1.5rem;
+      gap: var(--sp-3);
     }
     .contact-type {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 0.58rem;
+      font-size: 0.75rem;
       letter-spacing: 0.16em;
       text-transform: uppercase;
       color: var(--text-dim);
       min-width: 75px;
     }
     .contact-value {
-      font-size: 0.9rem;
+      font-size: 1.25rem;
       color: var(--text-muted);
       text-decoration: none;
       transition: color 0.2s;
     }
     .contact-value:hover { color: var(--accent); }
 
-    /* ─── FOOTER ─────────────────────────────────── */
+    /* ─── FOOTER ──────────────────────────────────────────── */
     footer {
-      padding: 2rem 0;
+      padding: var(--sp-4) 0;
       border-top: 1px solid var(--border);
-      position: relative;
-      z-index: 1;
     }
     .footer-inner {
       display: flex;
       justify-content: space-between;
       align-items: center;
       flex-wrap: wrap;
-      gap: 0.75rem;
+      gap: var(--sp-2);
     }
     .footer-copy {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 0.54rem;
+      font-size: 0.7rem;
       color: var(--text-dim);
       letter-spacing: 0.1em;
     }
 
-    /* ─── Scroll reveal ──────────────────────────── */
+    /* ─── Scroll reveal — opacity only ───────────────────── */
     .sr {
       opacity: 0;
-      transform: translateY(14px);
-      transition: opacity 0.75s ease, transform 0.75s ease;
+      transition: opacity 0.6s ease;
     }
     .sr.visible {
       opacity: 1;
-      transform: translateY(0);
+    }
+
+    /* ─── Print ───────────────────────────────────────────── */
+    @media print {
+      body {
+        font-size: 11pt;
+        color: #000;
+        background: #fff;
+      }
+      .hero-availability,
+      .hero-nav,
+      .section-label::after,
+      .portfolio-cta,
+      footer { display: none; }
+      #hero {
+        min-height: unset;
+        padding: 1cm 0 0.5cm;
+        border-bottom: 0.5pt solid #ccc;
+      }
+      .hero-name { font-size: 28pt; }
+      .hero-tagline { font-size: 12pt; }
+      section { padding: 0.6cm 0; border-top: 0.5pt solid #ccc; }
+      .container { padding: 0; max-width: 100%; }
+      a { color: inherit; text-decoration: none; }
+      .sr { opacity: 1; }
+      .timeline-highlight { border: 0.5pt solid #999; background: none; }
     }
   </style>
 </head>
@@ -540,7 +514,7 @@
   <section id="hero">
     <div class="container">
 
-      <div class="hero-badge">Available for engagement</div>
+      <div class="hero-availability">Available for engagement</div>
 
       <h1 class="hero-name">
         Gunther Eisen
@@ -553,8 +527,7 @@
       <p class="hero-location">Curitiba, Brazil — Remote-Ready for Global Opportunities</p>
 
       <p class="hero-tagline">
-        I help product teams understand what users actually need,<br>
-        and why the current experience falls short of that.
+        I help product teams understand what users actually need, and why the current experience falls short of that.
       </p>
 
       <nav class="hero-nav" aria-label="Page sections">
@@ -602,7 +575,7 @@
       <div class="timeline-item sr">
         <div class="timeline-dates">2013<br>— Present</div>
         <div>
-          <div class="timeline-role">Founder & Principal UX Consultant</div>
+          <div class="timeline-role">Founder &amp; Principal UX Consultant</div>
           <div class="timeline-company">Faber-Ludens Pro</div>
           <div class="timeline-desc">Strategic UX consulting for enterprise clients. Built bespoke ResearchOps and DesignOps frameworks, led design sprints and workshops, advised C-level executives on digital strategy and product direction.</div>
         </div>
@@ -614,17 +587,17 @@
           <div class="timeline-role">User Experience Strategist</div>
           <div class="timeline-company">Coopers Digital</div>
           <div class="timeline-desc">Mapping fragmented digital ecosystems across dozens of systems. Designed a unified information architecture and interaction pattern library as the foundation for a multi-year transformation initiative.</div>
-          <div class="timeline-highlight">↳ New architecture projected to reduce user navigation time by 40%</div>
+          <div class="timeline-highlight">New architecture projected to reduce user navigation time by 40%</div>
         </div>
       </div>
 
       <div class="timeline-item sr">
         <div class="timeline-dates">2022<br>— 2025</div>
         <div>
-          <div class="timeline-role">Senior UX Researcher & Product Designer</div>
+          <div class="timeline-role">Senior UX Researcher &amp; Product Designer</div>
           <div class="timeline-company">Newfold Digital · HostGator · Web.com · Bluehost</div>
           <div class="timeline-desc">Led research and design for a global web hosting portfolio across North American and LATAM markets. Built and scaled ResearchOps infrastructure. Collaborated with design systems teams on high-fidelity platform prototypes.</div>
-          <div class="timeline-highlight">↳ 40% reduction in research cycle time · directly shaped 3 major 2024 product releases</div>
+          <div class="timeline-highlight">40% reduction in research cycle time · directly shaped 3 major 2024 product releases</div>
         </div>
       </div>
 
@@ -634,7 +607,7 @@
           <div class="timeline-role">Senior UX Researcher</div>
           <div class="timeline-company">Pipefy</div>
           <div class="timeline-desc">De facto research lead for a complex B2B SaaS platform. Built the centralized ResearchOps system — participant repository, streamlined reporting — and embedded UX culture across product and marketing teams.</div>
-          <div class="timeline-highlight">↳ 25% increase in feature adoption for a key product area</div>
+          <div class="timeline-highlight">25% increase in feature adoption for a key product area</div>
         </div>
       </div>
 
@@ -644,14 +617,14 @@
           <div class="timeline-role">Senior UX Researcher / Team Leader</div>
           <div class="timeline-company">Bradesco Seguros</div>
           <div class="timeline-desc">Led the mobile app design team. Defined UX strategy, implemented DesignOps, mentored junior and mid-level designers, and launched three new app features with measurable engagement uplift.</div>
-          <div class="timeline-highlight">↳ 20% improvement in feature delivery time through process redesign</div>
+          <div class="timeline-highlight">20% improvement in feature delivery time through process redesign</div>
         </div>
       </div>
 
       <div class="timeline-item sr">
         <div class="timeline-dates">2007<br>— 2018</div>
         <div>
-          <div class="timeline-role">Executive Director, Co-founder & Professor</div>
+          <div class="timeline-role">Executive Director, Co-founder &amp; Professor</div>
           <div class="timeline-company">Faber-Ludens Institute for Interaction Design</div>
           <div class="timeline-desc">Co-founded and directed Brazil's first educational center focused exclusively on Interaction Design. Managed all operations, designed the academic curriculum, supervised over 15 graduate theses, and trained a generation of UX leaders.</div>
         </div>
