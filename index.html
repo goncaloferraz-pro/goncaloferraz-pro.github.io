@@ -56,7 +56,13 @@
       font-feature-settings: 'liga' 1, 'kern' 1;
     }
 
-    /* ─── Fade-in — opacity only, no movement ────────────── */
+    /* Fix 8 — global focus style ─────────────────────────── */
+    :focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 3px;
+    }
+
+    /* ─── Fade-in ─────────────────────────────────────────── */
     @keyframes fadeIn {
       from { opacity: 0; }
       to   { opacity: 1; }
@@ -72,25 +78,70 @@
       .container { padding: 0 var(--sp-4); }
     }
 
-    /* ─── Section label ───────────────────────────────────── */
+    /* Fix 1 — Sticky navigation ──────────────────────────── */
+    #site-nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      background: rgba(247, 244, 239, 0.94);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border);
+      z-index: 100;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+    #site-nav.visible {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .nav-inner {
+      max-width: 740px;
+      margin: 0 auto;
+      padding: 0 var(--sp-6);
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    @media (max-width: 640px) {
+      .nav-inner { padding: 0 var(--sp-4); }
+    }
+    .nav-name {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.12em;
+      color: var(--text-muted);
+      white-space: nowrap;
+    }
+    @media (max-width: 520px) { .nav-name { display: none; } }
+    .nav-links {
+      display: flex;
+      gap: var(--sp-4);
+      list-style: none;
+    }
+    @media (max-width: 520px) { .nav-links { gap: var(--sp-3); } }
+    .nav-links a {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.62rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover,
+    .nav-links a.active { color: var(--accent); }
+
+    /* ─── Section label — Fix 3 (neutral color), Fix 7 (no arbitrary max-width) */
     .section-label {
       font-family: 'JetBrains Mono', monospace;
       font-size: 0.75rem;
       font-weight: 400;
       letter-spacing: 0.22em;
       text-transform: uppercase;
-      color: var(--accent);
+      color: var(--text-muted);       /* was accent — fix 3 */
       margin-bottom: var(--sp-5);
-      display: flex;
-      align-items: center;
-      gap: 0.8rem;
-    }
-    .section-label::after {
-      content: '';
-      flex: 1;
-      max-width: 100px;
-      height: 1px;
-      background: var(--border);
     }
 
     /* ─── HERO ────────────────────────────────────────────── */
@@ -102,7 +153,7 @@
       padding: var(--sp-11) 0 var(--sp-8);
     }
 
-    /* Availability status — static dot, no pulse */
+    /* Availability — accent reserved for status signals */
     .hero-availability {
       font-family: 'JetBrains Mono', monospace;
       font-size: 0.78rem;
@@ -143,22 +194,16 @@
       margin-top: 0.05em;
     }
 
-    .hero-rule {
-      width: 48px;
-      height: 1px;
-      background: var(--border);
-      margin: var(--sp-4) 0;
-      animation: fadeIn 0.8s 0.2s ease both;
-    }
-
+    /* Fix 6 — hero-rule removed; margin-top on hero-title compensates */
     .hero-title {
       font-family: 'Cormorant Garamond', serif;
       font-size: clamp(1.2rem, 2.2vw, 1.45rem);
       font-weight: 400;
       color: var(--text-muted);
       letter-spacing: 0.02em;
+      margin-top: var(--sp-4);
       margin-bottom: var(--sp-1);
-      animation: fadeIn 0.8s 0.25s ease both;
+      animation: fadeIn 0.8s 0.2s ease both;
     }
 
     .hero-location {
@@ -167,7 +212,7 @@
       color: var(--text-dim);
       letter-spacing: 0.1em;
       margin-bottom: var(--sp-6);
-      animation: fadeIn 0.8s 0.3s ease both;
+      animation: fadeIn 0.8s 0.28s ease both;
     }
 
     .hero-tagline {
@@ -179,14 +224,14 @@
       color: var(--text);
       max-width: 540px;
       margin-bottom: var(--sp-6);
-      animation: fadeIn 0.8s 0.38s ease both;
+      animation: fadeIn 0.8s 0.36s ease both;
     }
 
     .hero-nav {
       display: flex;
       gap: var(--sp-5);
       flex-wrap: wrap;
-      animation: fadeIn 0.8s 0.48s ease both;
+      animation: fadeIn 0.8s 0.46s ease both;
     }
     .hero-nav a {
       font-family: 'JetBrains Mono', monospace;
@@ -214,9 +259,7 @@
       hyphens: auto;
     }
     .about-text:last-child { margin-bottom: 0; }
-    .about-text strong {
-      font-weight: 600;
-    }
+    .about-text strong { font-weight: 600; }
 
     /* ─── EXPERIENCE ──────────────────────────────────────── */
     .timeline-item {
@@ -248,7 +291,7 @@
     .timeline-company {
       font-family: 'JetBrains Mono', monospace;
       font-size: 0.78rem;
-      color: var(--accent);
+      color: var(--text-muted);           /* was accent — fix 3 */
       letter-spacing: 0.1em;
       text-transform: uppercase;
       margin-bottom: var(--sp-1);
@@ -265,7 +308,7 @@
       margin-top: var(--sp-1);
       font-family: 'JetBrains Mono', monospace;
       font-size: 0.72rem;
-      color: var(--accent);
+      color: var(--accent);               /* accent kept — evidence signal */
       letter-spacing: 0.06em;
       border: 1px solid var(--accent-border);
       background: var(--accent-dim);
@@ -280,54 +323,20 @@
       .timeline-dates { text-align: left; }
     }
 
-    /* ─── SKILLS ──────────────────────────────────────────── */
-    .skills-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: var(--sp-5) var(--sp-6);
-    }
-    @media (max-width: 520px) {
-      .skills-grid { grid-template-columns: 1fr; }
-    }
-
-    .skill-group-title {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.78rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--accent);
-      margin-bottom: var(--sp-2);
-    }
-    .skill-list {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 0.38rem;
-    }
-    .skill-list li {
-      font-size: 1.25rem;
-      color: var(--text-muted);
-      padding-left: 1.1em;
-      position: relative;
-    }
-    .skill-list li::before {
-      content: '—';
-      position: absolute;
-      left: 0;
-      color: var(--text-dim);
-    }
-
-    /* ─── PORTFOLIO CTA ───────────────────────────────────── */
+    /* Fix 2 — Portfolio CTA affordance ───────────────────── */
     .portfolio-cta {
       display: block;
       border: 1px solid var(--border);
+      border-bottom: 2px solid var(--accent); /* clear interactive signal */
       background: var(--bg-2);
       padding: var(--sp-6) var(--sp-6) var(--sp-5);
       text-decoration: none;
+      cursor: pointer;
       transition: border-color 0.3s, background 0.3s;
     }
     .portfolio-cta:hover {
       border-color: var(--accent-border);
+      border-bottom-color: var(--accent);
       background: var(--bg-3);
     }
 
@@ -336,7 +345,7 @@
       font-size: 0.78rem;
       letter-spacing: 0.2em;
       text-transform: uppercase;
-      color: var(--accent);
+      color: var(--text-dim);             /* was accent — fix 3 */
       margin-bottom: var(--sp-3);
     }
     .cta-title {
@@ -373,7 +382,7 @@
     .cta-arrow {
       font-family: 'JetBrains Mono', monospace;
       font-size: 0.85rem;
-      color: var(--accent);
+      color: var(--accent);               /* accent kept — action signal */
       letter-spacing: 0.1em;
     }
 
@@ -392,7 +401,7 @@
       font-size: 0.78rem;
       letter-spacing: 0.2em;
       text-transform: uppercase;
-      color: var(--accent);
+      color: var(--text-muted);           /* was accent — fix 3 */
       margin-bottom: var(--sp-3);
     }
     .cred-list {
@@ -443,7 +452,7 @@
       letter-spacing: 0.16em;
       text-transform: uppercase;
       color: var(--text-dim);
-      min-width: 75px;
+      min-width: 90px;                    /* widened to fit "WhatsApp BR" */
     }
     .contact-value {
       font-size: 1.25rem;
@@ -472,32 +481,22 @@
       letter-spacing: 0.1em;
     }
 
-    /* ─── Scroll reveal — opacity only ───────────────────── */
+    /* ─── Scroll reveal ───────────────────────────────────── */
     .sr {
       opacity: 0;
       transition: opacity 0.6s ease;
     }
-    .sr.visible {
-      opacity: 1;
-    }
+    .sr.visible { opacity: 1; }
 
     /* ─── Print ───────────────────────────────────────────── */
     @media print {
-      body {
-        font-size: 11pt;
-        color: #000;
-        background: #fff;
-      }
+      #site-nav,
       .hero-availability,
       .hero-nav,
-      .section-label::after,
       .portfolio-cta,
       footer { display: none; }
-      #hero {
-        min-height: unset;
-        padding: 1cm 0 0.5cm;
-        border-bottom: 0.5pt solid #ccc;
-      }
+      body { font-size: 11pt; color: #000; background: #fff; }
+      #hero { min-height: unset; padding: 1cm 0 0.5cm; border-bottom: 0.5pt solid #ccc; }
       .hero-name { font-size: 28pt; }
       .hero-tagline { font-size: 12pt; }
       section { padding: 0.6cm 0; border-top: 0.5pt solid #ccc; }
@@ -510,6 +509,20 @@
 </head>
 <body>
 
+  <!-- Fix 1 — Sticky navigation ═══════════════════════════ -->
+  <nav id="site-nav" aria-label="Site navigation">
+    <div class="nav-inner">
+      <span class="nav-name">Gunther Eisen</span>
+      <ul class="nav-links">
+        <li><a href="#about">About</a></li>
+        <li><a href="#experience">Experience</a></li>
+        <li><a href="#portfolio">Work</a></li>
+        <li><a href="#credentials">Credentials</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </div>
+  </nav>
+
   <!-- ═══ HERO ═══════════════════════════════════════════ -->
   <section id="hero">
     <div class="container">
@@ -521,8 +534,7 @@
         <span class="hero-name-alt">(Gonçalo Ferraz)</span>
       </h1>
 
-      <div class="hero-rule"></div>
-
+      <!-- Fix 6 — hero-rule removed; margin-top on hero-title compensates -->
       <p class="hero-title">Senior UX Leader · Principal UX Consultant</p>
       <p class="hero-location">Curitiba, Brazil — Remote-Ready for Global Opportunities</p>
 
@@ -633,64 +645,17 @@
     </div>
   </section>
 
-  <!-- ═══ SKILLS ══════════════════════════════════════════ -->
-  <section id="skills">
-    <div class="container">
-      <div class="section-label sr">Skills</div>
-      <div class="skills-grid">
-
-        <div class="skill-group sr">
-          <div class="skill-group-title">Research</div>
-          <ul class="skill-list">
-            <li>Mixed-methods research</li>
-            <li>Usability testing</li>
-            <li>Heuristic evaluation</li>
-            <li>User interviews &amp; surveys</li>
-            <li>A/B testing</li>
-          </ul>
-        </div>
-
-        <div class="skill-group sr">
-          <div class="skill-group-title">Design</div>
-          <ul class="skill-list">
-            <li>Information architecture</li>
-            <li>Interaction design</li>
-            <li>Wireframing &amp; prototyping</li>
-            <li>UX writing</li>
-          </ul>
-        </div>
-
-        <div class="skill-group sr">
-          <div class="skill-group-title">Leadership</div>
-          <ul class="skill-list">
-            <li>ResearchOps &amp; DesignOps</li>
-            <li>Team mentoring</li>
-            <li>Strategic planning</li>
-            <li>Stakeholder alignment</li>
-          </ul>
-        </div>
-
-        <div class="skill-group sr">
-          <div class="skill-group-title">Methods &amp; Tools</div>
-          <ul class="skill-list">
-            <li>Agile · Lean UX · Design Sprints</li>
-            <li>Figma · Miro · Dovetail</li>
-            <li>UserTesting.com · ProductBoard</li>
-            <li>Jira</li>
-          </ul>
-        </div>
-
-      </div>
-    </div>
-  </section>
+  <!-- Fix 5 — Skills section removed ════════════════════ -->
 
   <!-- ═══ PORTFOLIO CTA ═══════════════════════════════════ -->
   <section id="portfolio">
     <div class="container">
       <div class="section-label sr">Work</div>
+      <!-- Fix 2 — arrow changed to ↗ to signal new tab -->
       <a href="https://github.com/goncaloferraz-pro/portfolio"
          class="portfolio-cta sr"
-         target="_blank" rel="noopener noreferrer">
+         target="_blank" rel="noopener noreferrer"
+         aria-label="View case studies on GitHub (opens in new tab)">
         <div class="cta-label">Case Studies — Anonymized Portfolio</div>
         <div class="cta-title">17 engagements.<br>Real problems, real decisions.</div>
         <div class="cta-desc">
@@ -708,7 +673,7 @@
           <span class="cta-tag">E-Commerce</span>
           <span class="cta-tag">Manufacturing</span>
         </div>
-        <div class="cta-arrow">View case studies →</div>
+        <div class="cta-arrow">View case studies ↗</div>
       </a>
     </div>
   </section>
@@ -790,12 +755,13 @@
           <span class="contact-type">LinkedIn</span>
           <a href="https://linkedin.com/in/goncaloferraz" class="contact-value" target="_blank" rel="noopener">linkedin.com/in/goncaloferraz</a>
         </div>
+        <!-- Fix 4 — labeled WhatsApp, not ambiguous "Brazil"/"USA" -->
         <div class="contact-row sr">
-          <span class="contact-type">Brazil</span>
+          <span class="contact-type">WhatsApp BR</span>
           <a href="https://wa.me/5541999031789" class="contact-value" target="_blank" rel="noopener">+55 (41) 999-031-789</a>
         </div>
         <div class="contact-row sr">
-          <span class="contact-type">USA</span>
+          <span class="contact-type">WhatsApp US</span>
           <a href="https://wa.me/19784768873" class="contact-value" target="_blank" rel="noopener">+1 (978) 476-8873</a>
         </div>
       </div>
@@ -813,16 +779,40 @@
   </footer>
 
   <script>
-    const observer = new IntersectionObserver((entries) => {
+    // ── Scroll reveal ──────────────────────────────────────
+    const revealObserver = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
           entry.target.classList.add('visible');
-          observer.unobserve(entry.target);
+          revealObserver.unobserve(entry.target);
         }
       });
     }, { threshold: 0.08, rootMargin: '0px 0px -32px 0px' });
 
-    document.querySelectorAll('.sr').forEach(el => observer.observe(el));
+    document.querySelectorAll('.sr').forEach(el => revealObserver.observe(el));
+
+    // Fix 1 — Sticky nav: show after hero, track active section ──
+    const siteNav  = document.getElementById('site-nav');
+    const hero     = document.getElementById('hero');
+    const sections = document.querySelectorAll('section[id]:not(#hero)');
+    const navLinks = document.querySelectorAll('#site-nav .nav-links a');
+
+    function updateStickyNav() {
+      siteNav.classList.toggle('visible', hero.getBoundingClientRect().bottom < 0);
+    }
+    window.addEventListener('scroll', updateStickyNav, { passive: true });
+
+    const activeObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          navLinks.forEach(a => {
+            a.classList.toggle('active', a.getAttribute('href') === '#' + entry.target.id);
+          });
+        }
+      });
+    }, { threshold: 0.4 });
+
+    sections.forEach(s => activeObserver.observe(s));
   </script>
 
 </body>
